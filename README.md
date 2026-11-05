@@ -1,21 +1,14 @@
-# Next.js template
+# Pál Sándor website
 
-This is a Next.js template with shadcn/ui.
-
-## Adding components
-
-To add components to your app, run the following command:
+Next.js 16, next-intl (Hungarian at `/`, English at `/en`), React Three Fiber, Resend.
 
 ```bash
-npx shadcn@latest add button
+pnpm install
+cp .env.example .env.local
+pnpm dev
 ```
 
-This will place the ui components in the `components` directory.
-
-## Using components
-
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button";
-```
+- **Business facts** (showroom address, phone, email, company data): `lib/site.ts`. A `null` value stays off the page, or shows as "to be added" on the legal pages.
+- **All text**: `messages/hu.json` and `messages/en.json`. `pnpm build` fails if their keys differ or if either contains an em or en dash.
+- **3D house**: `components/hero/house-model.ts`.
+- **Hero posters and section images** come from the 3D scene. After changing the model, start `pnpm dev`, then run `pnpm render:stills` (needs Google Chrome).

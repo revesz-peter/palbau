@@ -1,0 +1,210 @@
+{
+  "meta": {
+    "title": "Pál Sándor | Családi házak generálkivitelezése, Pest vármegye",
+    "description": "Pál Sándor generálkivitelező családi házakat épít Pest vármegyében, az alaptól a kulcsátadásig, egy felelőssel. Kérjen időpontot, és nézze meg a bemutatóházat.",
+    "imprintTitle": "Impresszum | Pál Sándor",
+    "privacyTitle": "Adatvédelmi tájékoztató | Pál Sándor",
+    "notFoundTitle": "Az oldal nem található | Pál Sándor"
+  },
+  "nav": {
+    "brand": "Pál Sándor",
+    "skip": "Ugrás a tartalomra",
+    "approach": "Mit vállalok",
+    "contact": "Kapcsolat",
+    "cta": "Időpontot kérek",
+    "ctaShort": "Időpont",
+    "language": "Nyelv",
+    "home": "Pál Sándor, kezdőlap",
+    "promise": "Írásban"
+  },
+  "hero": {
+    "title": "Családi házak építése, az alaptól a kulcsokig.",
+    "lead": "Pál Sándor vagyok, generálkivitelező Pest vármegyében. Az Ön házának építéséért egy ember felel: én.",
+    "cta": "Időpontot kérek",
+    "hint": "Görgessen lefelé, és a ház felépül.",
+    "alt": "Modern, fehér villa építészeti makettje két magas szárnnyal, cseréptetős középső résszel, nagy üvegfelületekkel, terasszal és medencével.",
+    "phases": {
+      "foundation": {
+        "name": "Alap",
+        "text": "Az alapozással kezdődik a ház."
+      },
+      "walls": {
+        "name": "Falak",
+        "text": "Felépülnek a falak."
+      },
+      "roof": {
+        "name": "Tető",
+        "text": "Felkerül a tető."
+      },
+      "light": {
+        "name": "Ablakok és fény",
+        "text": "Beépülnek az ablakok. Kész az otthon."
+      }
+    }
+  },
+  "approach": {
+    "number": "1",
+    "title": "Mit jelent a generálkivitelezés?",
+    "body": "Ön egy emberrel beszél, és egy szerződést köt. A többit én szervezem.",
+    "points": {
+      "people": {
+        "title": "Szakemberek",
+        "text": "Én keresem meg és hangolom össze a szakembereket."
+      },
+      "materials": {
+        "title": "Anyagok",
+        "text": "Én rendelem meg az anyagokat, és időzítem a szállítást."
+      },
+      "responsibility": {
+        "title": "Felelősség",
+        "text": "Ha kérdése van, vagy hibát talál, engem hív."
+      }
+    },
+    "caption": "A ház modellje. Illusztráció.",
+    "termsTitle": "Szerkezetkész vagy kulcsrakész?",
+    "termsNote": "Ezek a szavak cégenként mást jelenthetnek. Ezért a szerződésben tételesen leírjuk, mi készül el.",
+    "terms": {
+      "structural": {
+        "title": "Szerkezetkész",
+        "text": "Elkészül az alap, a falak és a tető. A belső munkák még hátravannak.",
+        "imageAlt": "A ház modellje szerkezetkész állapotban: alap, falak és tető, még ablakok és belső munkák nélkül."
+      },
+      "turnkey": {
+        "title": "Kulcsrakész",
+        "text": "A ház beköltözhető állapotban készül el.",
+        "imageAlt": "A kész ház modellje ablakokkal, berendezett szobákkal, terasszal és kerttel."
+      }
+    }
+  },
+  "showroom": {
+    "title": "Nézze meg személyesen.",
+    "body": "Az irodám egy bemutatóház. Itt a saját szemével láthatja a munkámat, és nyugodtan átbeszéljük az elképzeléseit. A látogatáshoz előzetes egyeztetés szükséges.",
+    "addressPending": "A pontos címet az időpont egyeztetésekor adom meg."
+  },
+  "contact": {
+    "number": "3",
+    "title": "Beszéljünk a házáról.",
+    "body": "Írja meg, milyen házat tervez, és felveszem Önnel a kapcsolatot.",
+    "book": "Időpontot foglalok",
+    "bookNote": "A foglalás a Cal.com oldalán történik.",
+    "phoneLabel": "Telefon",
+    "emailLabel": "E-mail",
+    "form": {
+      "name": "Név",
+      "email": "E-mail-cím",
+      "phone": "Telefonszám (nem kötelező)",
+      "message": "Miben segíthetek?",
+      "consentBefore": "Elolvastam az ",
+      "consentLink": "adatvédelmi tájékoztatót",
+      "consentAfter": ", és hozzájárulok, hogy felvegye velem a kapcsolatot.",
+      "honeypot": "Weboldal (hagyja üresen)",
+      "submit": "Üzenet küldése",
+      "sending": "Küldés folyamatban",
+      "sent": "Üzenet elküldve. Hamarosan válaszolok az Ön által megadott e-mail-címen.",
+      "messageHint": "Írja meg például, hol van a telek, és mekkora házat szeretne."
+    },
+    "errors": {
+      "name": "Adja meg a nevét.",
+      "email": "Adjon meg érvényes e-mail-címet.",
+      "phone": "A telefonszám csak számokat és a szokásos jeleket tartalmazhatja.",
+      "message": "Írjon legalább néhány szót arról, miben segíthetek.",
+      "messageLong": "Az üzenet túl hosszú. Rövidítse le 4000 karakterre.",
+      "consent": "Az üzenet elküldéséhez fogadja el az adatvédelmi tájékoztatót.",
+      "invalid": "Az üzenet nem ment el. Ellenőrizze a mezőket, és küldje el újra.",
+      "unavailable": "Az üzenet nem ment el, mert a küldés most nem működik. Próbálja újra néhány perc múlva."
+    }
+  },
+  "footer": {
+    "role": "Családi házak generálkivitelezése, Pest vármegye",
+    "imprint": "Impresszum",
+    "privacy": "Adatvédelem",
+    "rights": "Minden jog fenntartva."
+  },
+  "legal": {
+    "pending": "Kitöltendő",
+    "back": "Vissza a kezdőlapra",
+    "imprint": {
+      "title": "Impresszum",
+      "operator": "A weboldal üzemeltetője",
+      "companyName": "Név",
+      "seat": "Székhely",
+      "taxNumber": "Adószám",
+      "registrationNumber": "Cégjegyzékszám vagy nyilvántartási szám",
+      "contactHeading": "Elérhetőség",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "hostingHeading": "Tárhelyszolgáltató",
+      "hosting": "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, Amerikai Egyesült Államok"
+    },
+    "privacy": {
+      "title": "Adatvédelmi tájékoztató",
+      "intro": "Ez a tájékoztató azt mutatja be, hogyan kezeljük az Ön személyes adatait, amikor a weboldalon üzenetet küld vagy időpontot foglal.",
+      "controllerHeading": "Adatkezelő",
+      "sections": {
+        "data": {
+          "title": "Milyen adatokat kezelünk",
+          "body": "A kapcsolatfelvételi űrlapon megadott nevét, e-mail-címét, telefonszámát, ha megadja, és az üzenete tartalmát."
+        },
+        "purpose": {
+          "title": "Miért és milyen jogalappal",
+          "body": "Azért, hogy válaszoljunk az érdeklődésére, és egyeztessünk Önnel. A jogalap az Ön hozzájárulása, illetve a szerződés megkötését megelőző lépések megtétele (GDPR 6. cikk (1) bekezdés a) és b) pont)."
+        },
+        "retention": {
+          "title": "Meddig őrizzük meg",
+          "body": "Az érdeklődés lezárásától számított egy évig, vagy amíg Ön korábban nem kéri az adatok törlését. Ha szerződést kötünk, a szerződéses iratokra a jogszabályban előírt megőrzési idő vonatkozik."
+        },
+        "processors": {
+          "title": "Kik férnek hozzá",
+          "body": "Az üzenetek kézbesítésében a Resend, a weboldal üzemeltetésében a Vercel közreműködik. Mindkét szolgáltató az Amerikai Egyesült Államokban is kezelhet adatokat. Ha a Cal.com oldalán foglal időpontot, a foglalás adatait a Cal.com is kezeli, a saját tájékoztatója szerint."
+        },
+        "cookies": {
+          "title": "Sütik",
+          "body": "A weboldal nem használ követő vagy marketing célú sütiket, és nem gyűjt látogatottsági adatokat."
+        },
+        "rights": {
+          "title": "Az Ön jogai",
+          "body": "Kérhet tájékoztatást az adatairól, kérheti azok helyesbítését, törlését vagy kezelésük korlátozását, és hozzájárulását bármikor visszavonhatja. Panaszával a Nemzeti Adatvédelmi és Információszabadság Hatósághoz fordulhat: 1055 Budapest, Falk Miksa utca 9-11., ugyfelszolgalat@naih.hu, www.naih.hu."
+        }
+      }
+    }
+  },
+  "notFound": {
+    "title": "Ezt az oldalt nem találjuk.",
+    "body": "A cím megváltozott, vagy elírás történt. A kezdőlapon mindent megtalál.",
+    "back": "Vissza a kezdőlapra"
+  },
+  "promise": {
+    "number": "2",
+    "title": "Amit írásban kap.",
+    "intro": "Sok építkezési vita abból indul, hogy valami csak szóban hangzott el. Ezért a fontos dolgok a szerződésbe kerülnek.",
+    "items": {
+      "scope": {
+        "question": "Pontosan mi van az árban?",
+        "answer": "A szerződés mellékletében tételesen szerepel, mi készül el és miből. Az is, mi nincs benne, például a kerítés."
+      },
+      "price": {
+        "question": "Mennyi lesz a végső ár?",
+        "answer": "Az árat a szerződés rögzíti. Minden változtatás költségét előre megmondom, és csak az Ön jóváhagyásával készül el."
+      },
+      "time": {
+        "question": "Mikor lesz kész a ház?",
+        "answer": "Az ütemterv és az átadás határideje a szerződésben szerepel. Ha valami változik, időben szólok."
+      },
+      "payment": {
+        "question": "Mikor kell fizetnem?",
+        "answer": "Részletekben, az elkészült munka szerint. Az összegeket és az időpontokat előre rögzítjük."
+      },
+      "defects": {
+        "question": "Kihez fordulhatok, ha hibát találok?",
+        "answer": "Hozzám. A jótállás feltételeit a szerződés tartalmazza."
+      },
+      "inspection": {
+        "question": "Ellenőrizhetem a munkát?",
+        "answer": "Igen, egyeztetés után bármikor. Saját műszaki ellenőrt is hívhat."
+      }
+    },
+    "cardsLabel": "Mi kerül a szerződésbe",
+    "previous": "Előző kérdés",
+    "next": "Következő kérdés"
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "meta": {
+    "title": "Sándor Pál | General contractor for family homes, Pest County",
+    "description": "Sándor Pál is a general contractor building family homes in Pest County, Hungary, from foundation to handover, with one person responsible. Book a call or tour the showroom house.",
+    "imprintTitle": "Legal notice | Sándor Pál",
+    "privacyTitle": "Privacy policy | Sándor Pál",
+    "notFoundTitle": "Page not found | Sándor Pál"
+  },
+  "nav": {
+    "brand": "Sándor Pál",
+    "skip": "Skip to content",
+    "approach": "What I do",
+    "contact": "Contact",
+    "cta": "Book a call",
+    "ctaShort": "Book",
+    "language": "Language",
+    "home": "Sándor Pál, home",
+    "promise": "In writing"
+  },
+  "hero": {
+    "title": "Family homes built, from foundation to keys.",
+    "lead": "I am Sándor Pál, a general contractor in Pest County, Hungary. One person answers for the building of your home: me.",
+    "cta": "Book a call",
+    "hint": "Scroll down and the house builds itself.",
+    "alt": "Architectural model of a modern white villa with two tall wings, a tiled centre, large glazing, and a terrace with a pool.",
+    "phases": {
+      "foundation": {
+        "name": "Foundation",
+        "text": "A house starts with its foundation."
+      },
+      "walls": {
+        "name": "Walls",
+        "text": "The walls go up."
+      },
+      "roof": {
+        "name": "Roof",
+        "text": "The roof goes on."
+      },
+      "light": {
+        "name": "Windows and light",
+        "text": "The windows go in. The home is ready."
+      }
+    }
+  },
+  "approach": {
+    "number": "1",
+    "title": "What does a general contractor do?",
+    "body": "You talk to one person and sign one contract. I organise the rest.",
+    "points": {
+      "people": {
+        "title": "Tradespeople",
+        "text": "I find the tradespeople and coordinate their work."
+      },
+      "materials": {
+        "title": "Materials",
+        "text": "I order the materials and time the deliveries."
+      },
+      "responsibility": {
+        "title": "Responsibility",
+        "text": "If you have a question or find a fault, you call me."
+      }
+    },
+    "caption": "Model of the house. Illustration.",
+    "termsTitle": "Shell or turnkey?",
+    "termsNote": "These words can mean different things from one company to the next. That is why the contract lists exactly what will be built.",
+    "terms": {
+      "structural": {
+        "title": "Shell (szerkezetkész)",
+        "text": "The foundation, walls and roof are finished. The interior work is still to come.",
+        "imageAlt": "Model of the house as a shell: foundation, walls and roof, with no windows or interior yet."
+      },
+      "turnkey": {
+        "title": "Turnkey (kulcsrakész)",
+        "text": "The house is finished and ready to move into.",
+        "imageAlt": "Model of the finished house, with windows, furnished rooms, a terrace and a garden."
+      }
+    }
+  },
+  "showroom": {
+    "title": "See it for yourself.",
+    "body": "My office is a showroom house. Here you can see my work with your own eyes, and we can talk through your ideas without hurry. Visits are by appointment.",
+    "addressPending": "I will share the exact address when we arrange your visit."
+  },
+  "contact": {
+    "number": "3",
+    "title": "Let's talk about your house.",
+    "body": "Tell me what kind of house you are planning, and I will get in touch.",
+    "book": "Book a time",
+    "bookNote": "Booking takes place on Cal.com.",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email",
+    "form": {
+      "name": "Name",
+      "email": "Email address",
+      "phone": "Phone number (optional)",
+      "message": "How can I help?",
+      "consentBefore": "I have read the ",
+      "consentLink": "privacy policy",
+      "consentAfter": " and agree to being contacted using these details.",
+      "honeypot": "Website (leave empty)",
+      "submit": "Send message",
+      "sending": "Sending",
+      "sent": "Message sent. I will reply soon to the email address you provided.",
+      "messageHint": "For example, tell me where the plot is and how large a house you would like."
+    },
+    "errors": {
+      "name": "Enter your name.",
+      "email": "Enter a valid email address.",
+      "phone": "A phone number can only contain digits and the usual symbols.",
+      "message": "Write at least a few words about how I can help.",
+      "messageLong": "The message is too long. Shorten it to 4000 characters.",
+      "consent": "Accept the privacy policy to send your message.",
+      "invalid": "The message was not sent. Check the fields and send it again.",
+      "unavailable": "The message was not sent because sending is not working right now. Try again in a few minutes."
+    }
+  },
+  "footer": {
+    "role": "General contractor for family homes, Pest County, Hungary",
+    "imprint": "Legal notice",
+    "privacy": "Privacy",
+    "rights": "All rights reserved."
+  },
+  "legal": {
+    "pending": "To be added",
+    "back": "Back to the home page",
+    "imprint": {
+      "title": "Legal notice",
+      "operator": "Website operator",
+      "companyName": "Name",
+      "seat": "Registered office",
+      "taxNumber": "Tax number",
+      "registrationNumber": "Company or registration number",
+      "contactHeading": "Contact",
+      "email": "Email",
+      "phone": "Phone",
+      "hostingHeading": "Hosting provider",
+      "hosting": "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, United States"
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "This policy explains how we handle your personal data when you send a message or book a time through this website.",
+      "controllerHeading": "Data controller",
+      "sections": {
+        "data": {
+          "title": "What data we handle",
+          "body": "The name and email address you enter in the contact form, your phone number if you provide it, and the content of your message."
+        },
+        "purpose": {
+          "title": "Why, and on what legal basis",
+          "body": "To answer your inquiry and arrange next steps with you. The legal basis is your consent and the steps taken before entering into a contract (GDPR Article 6(1)(a) and (b))."
+        },
+        "retention": {
+          "title": "How long we keep it",
+          "body": "For one year after your inquiry is closed, or until you ask us to delete it. If we sign a contract, the contract documents are kept for the period required by law."
+        },
+        "processors": {
+          "title": "Who has access",
+          "body": "Resend helps deliver messages and Vercel helps run the website. Both providers may also process data in the United States. If you book a time on Cal.com, Cal.com also handles the booking details under its own policy."
+        },
+        "cookies": {
+          "title": "Cookies",
+          "body": "This website does not use tracking or marketing cookies and does not collect visitor statistics."
+        },
+        "rights": {
+          "title": "Your rights",
+          "body": "You can ask for information about your data, and ask for it to be corrected, deleted or restricted. You can withdraw your consent at any time. You can complain to the Hungarian National Authority for Data Protection and Freedom of Information: 1055 Budapest, Falk Miksa utca 9-11., ugyfelszolgalat@naih.hu, www.naih.hu."
+        }
+      }
+    }
+  },
+  "notFound": {
+    "title": "We can't find this page.",
+    "body": "The address has changed or contains a typo. Everything is on the home page.",
+    "back": "Back to the home page"
+  },
+  "promise": {
+    "number": "2",
+    "title": "What you get in writing.",
+    "intro": "Many building disputes start because something was only agreed verbally. So the important things go into the contract.",
+    "items": {
+      "scope": {
+        "question": "What exactly does the price include?",
+        "answer": "An attachment to the contract lists what will be built and from what. It also lists what is not included, such as the fence."
+      },
+      "price": {
+        "question": "What will the final price be?",
+        "answer": "The contract sets the price. I tell you the cost of any change first, and it only goes ahead with your approval."
+      },
+      "time": {
+        "question": "When will the house be finished?",
+        "answer": "The schedule and the handover date are in the contract. If anything changes, I tell you in good time."
+      },
+      "payment": {
+        "question": "When do I have to pay?",
+        "answer": "In instalments, according to the work completed. The amounts and dates are agreed in advance."
+      },
+      "defects": {
+        "question": "Who do I contact if I find a fault?",
+        "answer": "Me. The warranty terms are in the contract."
+      },
+      "inspection": {
+        "question": "Can I check the work?",
+        "answer": "Yes, at any time by arrangement. You can also bring your own independent inspector."
+      }
+    },
+    "cardsLabel": "What goes into the contract",
+    "previous": "Previous question",
+    "next": "Next question"
+  }
+}
