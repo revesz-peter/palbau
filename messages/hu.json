@@ -36,9 +36,17 @@
         "name": "Tető",
         "text": "Felkerül a tető."
       },
-      "light": {
-        "name": "Ablakok és fény",
-        "text": "Beépülnek az ablakok. Kész az otthon."
+      "windows": {
+        "name": "Nyílászárók",
+        "text": "Beépülnek az ablakok és az ajtók."
+      },
+      "interior": {
+        "name": "Belső munkák",
+        "text": "Elkészül a homlokzat és a belső tér."
+      },
+      "garden": {
+        "name": "Terasz és kert",
+        "text": "Elkészül a terasz és a kert. Kész az otthon."
       }
     }
   },

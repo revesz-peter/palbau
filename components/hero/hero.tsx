@@ -261,7 +261,7 @@ export function Hero() {
                 />
               </div>
               {/* Phones show only the current step, at a size that can be read. */}
-              <ol className="mt-3 grid min-h-24 grid-cols-1 stage:min-h-0 stage:grid-cols-4 stage:gap-6">
+              <ol className="mt-3 grid min-h-24 grid-cols-1 stage:min-h-0 stage:grid-cols-6 stage:gap-5">
                 {PHASES.map(({ key }, index) => (
                   <li
                     key={key}

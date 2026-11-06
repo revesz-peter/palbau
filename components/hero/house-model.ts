@@ -16,8 +16,21 @@ function oklch(l: number, c: number, h: number) {
   )
 }
 
+/** Seeded, so that the canvas and the rendered posters always match. */
+function seededRandom(seed: number) {
+  let state = seed
+  return () => {
+    state = (state + 0x6d2b79f5) | 0
+    let t = Math.imul(state ^ (state >>> 15), 1 | state)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
 export const SKY_START = oklch(0.972, 0.012, 85) // --beige
 const SKY_DAY = oklch(0.915, 0.028, 82)
+const RAW_WALL = oklch(0.84, 0.014, 75) // Bare pale blocks, before render.
+const FINISHED_WALL = oklch(0.99, 0.001, 95)
 const INK = oklch(0.22, 0.012, 70) // --ink
 const RAL_8019 = "#3d3635" // Grey Brown (Graubraun).
 const ROOF_DIMMING = 0.5
@@ -88,86 +101,28 @@ function mesh(geometry: THREE.BufferGeometry, mat: THREE.Material) {
   return object
 }
 
-/** Seeded, so that the canvas and the rendered posters always match. */
-function seededRandom(seed: number) {
-  let state = seed
-  return () => {
-    state = (state + 0x6d2b79f5) | 0
-    let t = Math.imul(state ^ (state >>> 15), 1 | state)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
-
-/** A rough planting mass. `radiusAt` gives its width from 0 (base) to 1 (top). */
-function foliageGeometry(
-  height: number,
-  radius: number,
-  seed: number,
-  radiusAt: (t: number) => number,
-  lite: boolean
-) {
-  const random = seededRandom(seed)
-  const waves = Array.from({ length: 16 }, (_, i) => {
-    const frequency = i < 4 ? 14 : 62
-    return {
-      x: (random() - 0.5) * frequency,
-      y: (random() - 0.5) * frequency,
-      z: (random() - 0.5) * frequency,
-      phase: random() * Math.PI * 2,
-    }
-  })
-  const segments = lite ? (height > 3 ? 28 : 20) : height > 3 ? 64 : 48
-  const geometry = new THREE.SphereGeometry(1, segments, segments)
-  const position = geometry.attributes.position
-  const colors = new Float32Array(position.count * 3)
-  for (let i = 0; i < position.count; i++) {
-    const x = position.getX(i)
-    const y = position.getY(i)
-    const z = position.getZ(i)
-    const t = (y + 1) / 2
-    const noise = waves.reduce(
-      (sum, w) => sum + Math.sin(w.x * x + w.y * y + w.z * z + w.phase),
-      0
-    )
-    const clump = 1 + 0.018 * noise + 0.03 * (random() - 0.5)
-    const r = radius * radiusAt(t) * clump
-    position.setXYZ(i, x * r, t * height, z * r)
-    // Lighter leaf tips over deep shade, and darker towards the base.
-    const shade = (0.84 + 0.06 * noise + 0.16 * random()) * (0.76 + 0.32 * t)
-    colors.set([shade, shade, shade], i * 3)
-  }
-  geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3))
-  geometry.computeVertexNormals()
-  return geometry
-}
-
-const thujaProfile = (t: number) => Math.min(1, 7 * t + 0.55) * (1 - t) ** 0.8
-const shrubProfile = (t: number) => Math.sqrt(Math.max(0, 1 - (2 * t - 1) ** 2))
-
-function gravelTexture(lite: boolean) {
+function grassTexture(lite: boolean) {
   const size = lite ? 512 : 1024
   const canvas = document.createElement("canvas")
   canvas.width = size
   canvas.height = size
   const context = canvas.getContext("2d")!
-  context.fillStyle = "#e6dfd0"
+  context.fillStyle = "#6f8a4e"
   context.fillRect(0, 0, size, size)
   const random = seededRandom(7)
-  const stones = ["#f6f1e6", "#d8cfbd", "#c4baa6", "#ece5d7", "#b5aa95"]
-  for (let i = 0; i < (lite ? 6500 : 26000); i++) {
-    context.fillStyle = stones[Math.floor(random() * stones.length)]
+  const blades = ["#7d9a58", "#64804a", "#8aa765", "#587441", "#95b070"]
+  context.lineWidth = lite ? 1.5 : 2
+  context.lineCap = "round"
+  for (let i = 0; i < (lite ? 9000 : 36000); i++) {
+    const x = random() * size
+    const y = random() * size
+    const angle = random() * Math.PI * 2
+    const length = 3 + random() * 6
+    context.strokeStyle = blades[Math.floor(random() * blades.length)]
     context.beginPath()
-    context.ellipse(
-      random() * size,
-      random() * size,
-      1.5 + random() * 3.5,
-      1.5 + random() * 2.5,
-      random() * Math.PI,
-      0,
-      Math.PI * 2
-    )
-    context.fill()
+    context.moveTo(x, y)
+    context.lineTo(x + Math.cos(angle) * length, y + Math.sin(angle) * length)
+    context.stroke()
   }
   const texture = new THREE.CanvasTexture(canvas)
   texture.colorSpace = THREE.SRGBColorSpace
@@ -221,7 +176,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   /** Everything that is not there yet on a shell (szerkezetkész) house. */
   const finishParts: Part[] = []
 
-  const plaster = material(oklch(0.99, 0.001, 95), 0.92, 0, clipSlab)
+  const plaster = material(RAW_WALL.clone(), 0.92, 0, clipSlab)
   const interior = material(oklch(0.96, 0.006, 90), 0.8, 0, clipSlab)
   const concrete = material(oklch(0.84, 0.006, 85), 0.9, 0, clipBoard)
   const deckBase = material(oklch(0.74, 0.008, 80), 0.9, 0, clipBoard)
@@ -287,7 +242,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       object,
       kind: "grow",
       start,
-      end: start + 0.1,
+      end: start + 0.05,
       travel: 0,
       materials: [],
       opacity: 1,
@@ -346,7 +301,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   shadowCatcher.receiveShadow = true
   root.add(shadowCatcher)
 
-  /* Phase 1: foundation, terrace and the pool basin. */
+  /* Foundation first. The terrace and pool are built here but rise at the end. */
   const slabs = boxes([
     {
       size: [X3 - X0 + 0.4, SLAB_TOP, ZF - ZB + 0.4],
@@ -357,7 +312,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       at: [(X2 + X3) / 2 + 0.1, SLAB_TOP / 2, (ZR + ZF) / 2 + 0.2],
     },
   ])
-  addRise(mesh(slabs, concrete), 0.03, 0.15, SLAB_TOP)
+  addRise(mesh(slabs, concrete), 0.02, 0.12, SLAB_TOP)
   ghostSources.push(slabs)
 
   const DECK = { x0: -10.4, x1: X2, z0: ZF + 0.2, z1: 12.2, top: 0.2 }
@@ -370,7 +325,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       (DECK.z0 + DECK.z1) / 2,
     ],
   })
-  addRise(mesh(deck, deckBase), 0.08, 0.17, DECK.top)
+  addRise(mesh(deck, deckBase), 0.88, 0.92, DECK.top)
   ghostSources.push(deck)
 
   const PAVER = 1.2
@@ -396,7 +351,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     }
   }
   const pavingStart = parts.length
-  addRise(mesh(boxes(paverSpecs), stone), 0.11, 0.2, DECK.top)
+  addRise(mesh(boxes(paverSpecs), stone), 0.89, 0.93, DECK.top)
 
   const POOL_W = POOL.x1 - POOL.x0
   const POOL_D = POOL.z1 - POOL.z0
@@ -420,7 +375,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       at: [POOL.x1 + 0.2, DECK.top + 0.015, POOL_CZ],
     },
   ])
-  addRise(mesh(copingGeometry, coping), 0.12, 0.2, DECK.top)
+  addRise(mesh(copingGeometry, coping), 0.9, 0.94, DECK.top)
   ghostSources.push(copingGeometry)
 
   const basin = new THREE.Mesh(
@@ -430,7 +385,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     }),
     material(oklch(0.72, 0.05, 215), 0.7, 0, clipBoard)
   )
-  addRise(basin, 0.12, 0.2, DECK.top)
+  addRise(basin, 0.9, 0.94, DECK.top)
   finishParts.push(...parts.slice(pavingStart))
 
   /* Phase 2: walls. They emerge from the slab, clipped at its top. */
@@ -445,7 +400,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     if (alongZ) geometry.rotateY(-Math.PI / 2)
     geometry.translate(x, 0, z)
     ghostSources.push(geometry)
-    addRise(mesh(geometry, plaster), start, start + 0.12, height)
+    addRise(mesh(geometry, plaster), start, start + 0.08, height)
   }
 
   const S = SLAB_TOP + 0.04
@@ -479,13 +434,13 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   const KITCHEN_GLASS = [-0.2, 1.4, 3] as const
   const BACK_WINDOWS = [-2.6, 1] // Left edges in the back of the centre.
   const STREET_HEAD = 2.6
-  // Rooms along the back lie behind this wall. The TV hangs on its terrace side.
+  // Rooms along the back lie behind this wall.
   const INNER_Z = -1.6
   const INNER_FACE = INNER_Z + 0.2
   const ROOM_OPENING = { z0: INNER_FACE, z1: ZF - 0.65, head: 3 }
 
   // Living wing: back, outer, inner, then the terrace front.
-  addWall(wallGeometry(livingProfile, [], WALL), { z: ZB }, 0.2, PEAK)
+  addWall(wallGeometry(livingProfile, [], WALL), { z: ZB }, 0.15, PEAK)
   addWall(
     wallGeometry(
       rect(ZB, SLAB_TOP, ZF, EAVE),
@@ -497,7 +452,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       WALL
     ),
     { x: X0 + WALL, alongZ: true },
-    0.22,
+    0.17,
     EAVE
   )
   // Open below the beam: the wing and the centre are one room. The wall above
@@ -518,7 +473,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       WALL
     ),
     { x: X1, alongZ: true },
-    0.24,
+    0.19,
     PEAK
   )
   addWall(
@@ -528,16 +483,16 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       WALL
     ),
     { z: ZF - WALL },
-    0.27,
+    0.22,
     PEAK
   )
 
   // Bedroom wing.
-  addWall(wallGeometry(bedroomProfile, [], WALL), { z: ZB }, 0.29, PEAK)
+  addWall(wallGeometry(bedroomProfile, [], WALL), { z: ZB }, 0.24, PEAK)
   addWall(
     wallGeometry(rect(ZB, SLAB_TOP, ZR, PEAK), [], WALL),
     { x: X2 + WALL, alongZ: true },
-    0.3,
+    0.25,
     PEAK
   )
   addWall(
@@ -549,7 +504,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       WALL
     ),
     { x: X3, alongZ: true },
-    0.32,
+    0.27,
     EAVE
   )
   addWall(
@@ -562,7 +517,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       WALL
     ),
     { z: ZR - WALL },
-    0.35,
+    0.3,
     PEAK
   )
 
@@ -574,7 +529,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       WALL
     ),
     { z: ZB },
-    0.36,
+    0.31,
     EAVE
   )
   addWall(
@@ -588,13 +543,13 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       WALL
     ),
     { z: ZF - WALL },
-    0.38,
+    0.33,
     EAVE
   )
   addWall(
     wallGeometry(rect(X0 + WALL, SLAB_TOP, X2, EAVE), [], 0.2),
     { z: INNER_Z },
-    0.37,
+    0.32,
     EAVE
   )
 
@@ -615,13 +570,13 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       ]),
       whiteFloor
     ),
-    0.2,
-    0.26,
+    0.76,
+    0.8,
     0.05
   )
   // One white great room, from the far wing to the middle of the house. Far end:
   // a kitchen counter around the corner, up to the big side glass. Then a table,
-  // a lot of open floor, and the corner couch near the door, facing the TV.
+  // a lot of open floor, and the corner couch near the door.
   const FLOOR = SLAB_TOP
   const WORKTOP = FLOOR + 0.9
   const COUNTER_DEPTH = 0.66
@@ -636,7 +591,6 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   const SIDE_FRONT = X0 + WALL + COUNTER_DEPTH
   const TABLE_TOP = FLOOR + 0.76
   const COUCH = { x: 0.05, width: 2.9, z: 1.7, depth: 1 }
-  const TV_X = 0.1
 
   // A chair whose back is towards (dx, dz), so that it faces the opposite way.
   const chair = (x: number, z: number, dx: number, dz: number): BoxSpec[] => [
@@ -717,17 +671,13 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
         ...chair(-6.3, 1.85, 0, 1),
         ...chair(-7.3, 0.15, 0, -1),
         ...chair(-6.3, 0.15, 0, -1),
-        // Low unit under the TV and a low table in front of the couch.
-        {
-          size: [2.6, 0.42, 0.42],
-          at: [TV_X, FLOOR + 0.21, INNER_FACE + 0.21],
-        },
+        // A low table in front of the couch.
         { size: [1.1, 0.34, 0.7], at: [0.35, FLOOR + 0.17, 0.2] },
       ]),
       interior
     ),
-    0.3,
-    0.42,
+    0.78,
+    0.86,
     3.2
   )
   // The white corner couch, with its long back towards the terrace glass.
@@ -753,8 +703,8 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       ]),
       fabric
     ),
-    0.38,
-    0.46,
+    0.8,
+    0.86,
     1.4
   )
   // Vertical blinds on the outer end of the dining glass.
@@ -766,22 +716,17 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       tilt: 0,
     })
   }
-  addRise(mesh(boxes(blindSpecs), fabric), 0.4, 0.48, 3)
+  addRise(mesh(boxes(blindSpecs), fabric), 0.82, 0.87, 3)
   addRise(
     mesh(
       boxes([
-        // The TV on the inner wall, in front of the couch.
-        {
-          size: [1.6, 0.92, 0.05],
-          at: [TV_X, FLOOR + 1.02, INNER_FACE + 0.03],
-        },
         // The hob, the only dark thing in the kitchen.
         { size: [0.8, 0.012, 0.5], at: [-8.4, WORKTOP + 0.05, KITCHEN.z] },
       ]),
       dark
     ),
-    0.42,
-    0.5,
+    0.82,
+    0.87,
     3
   )
   addRise(
@@ -793,8 +738,8 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       ]),
       material(oklch(0.8, 0.006, 80), 0.8, 0, clipSlab)
     ),
-    0.3,
-    0.42,
+    0.78,
+    0.86,
     3.2
   )
 
@@ -949,18 +894,18 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       at: [BEAM.x, BEAM.top - 0.345, beamZ],
     },
   ])
-  addDrop(beam, material(oklch(0.34, 0.008, 250), 0.45, 0.6), 0.46, 0.54)
+  addDrop(beam, material(oklch(0.34, 0.008, 250), 0.45, 0.6), 0.4, 0.46)
   ghostSources.push(beam)
   addDrop(
     mergeGeometries([boxes(rafterSpecs), living.rafters, bedroom.rafters]),
     material(oklch(0.72, 0.07, 72), 0.75),
-    0.5,
-    0.6
+    0.43,
+    0.5
   )
-  addDrop(living.roof, roofing(), 0.56, 0.64)
-  addDrop(bedroom.roof, roofing(), 0.6, 0.68)
-  addDrop(slope(-1), roofing(), 0.63, 0.7)
-  addDrop(slope(1), roofing(), 0.67, 0.75)
+  addDrop(living.roof, roofing(), 0.48, 0.55)
+  addDrop(bedroom.roof, roofing(), 0.51, 0.58)
+  addDrop(slope(-1), roofing(), 0.54, 0.6)
+  addDrop(slope(1), roofing(), 0.57, 0.63)
 
   const front = slopeCentre(1)
   const eaveY = front.y - (SLOPE_LENGTH / 2) * Math.sin(PITCH) + 0.08
@@ -972,7 +917,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     { size: [0.09, eaveY - 0.25, 0.09], at: [3.5, eaveY / 2, ZF + 0.08] },
   ])
   eaveGeometry.translate((X1 + X2) / 2, 0, 0)
-  addDrop(eaveGeometry, roofing(), 0.7, 0.76)
+  addDrop(eaveGeometry, roofing(), 0.6, 0.65)
   ghostSources.push(
     boxGeometry({
       size: [CENTRE_W, 0.1, SLOPE_LENGTH],
@@ -1050,7 +995,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   BACK_WINDOWS.forEach((x) => glazeAlongX(x, x + 1.6, 1, 2.5, ZB + REVEAL, 1))
   const frames = boxes(frameSpecs)
   const framesStart = parts.length
-  addRise(mesh(frames, frame), 0.75, 0.84, 3.2)
+  addRise(mesh(frames, frame), 0.65, 0.72, 3.2)
   finishParts.push(...parts.slice(framesStart))
   ghostSources.push(frames)
 
@@ -1069,30 +1014,30 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   parts.push({
     object: new THREE.Group(),
     kind: "fade",
-    start: 0.8,
-    end: 0.92,
+    start: 0.68,
+    end: 0.76,
     travel: 0,
     materials: [glassMaterial],
     opacity: 0.16,
   })
 
-  // Pale gravel over the board, and the water in the pool.
-  const gravelMap = gravelTexture(lite)
-  gravelMap.repeat.set(7, 6)
-  const gravelMaterial = new THREE.MeshStandardMaterial({
-    map: gravelMap,
+  // A lawn over the board, and the water in the pool.
+  const grassMap = grassTexture(lite)
+  grassMap.repeat.set(7, 6)
+  const grassMaterial = new THREE.MeshStandardMaterial({
+    map: grassMap,
     roughness: 1,
     transparent: true,
     opacity: 0,
   })
-  const gravel = new THREE.Mesh(
+  const grass = new THREE.Mesh(
     new THREE.PlaneGeometry(BOARD.width, BOARD.depth),
-    gravelMaterial
+    grassMaterial
   )
-  gravel.rotation.x = -Math.PI / 2
-  gravel.position.set(0, 0.004, BOARD.z)
-  gravel.receiveShadow = true
-  root.add(gravel)
+  grass.rotation.x = -Math.PI / 2
+  grass.position.set(0, 0.004, BOARD.z)
+  grass.receiveShadow = true
+  root.add(grass)
   const waterMaterial = new THREE.MeshStandardMaterial({
     color: oklch(0.74, 0.07, 215),
     roughness: 0.3,
@@ -1113,17 +1058,17 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     {
       object: new THREE.Group(),
       kind: "fade",
-      start: 0.78,
-      end: 0.88,
+      start: 0.93,
+      end: 0.98,
       travel: 0,
-      materials: [gravelMaterial],
+      materials: [grassMaterial],
       opacity: 1,
     },
     {
       object: new THREE.Group(),
       kind: "fade",
-      start: 0.82,
-      end: 0.92,
+      start: 0.93,
+      end: 0.98,
       travel: 0,
       materials: [waterMaterial],
       opacity: 1,
@@ -1141,47 +1086,31 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     })
     return mesh(mergeGeometries([seat, back]), loungerMaterial)
   }
-  ;[1.3, 2.5].forEach((x, i) => addGrow(lounger(), x, 9.6, 0.86 + i * 0.01))
+  ;[1.3, 2.5].forEach((x, i) => addGrow(lounger(), x, 9.6, 0.93 + i * 0.01))
 
-  // Slender thujas and low shrubs, as in the reference garden.
-  const foliage = (l: number, c: number, h: number) => {
-    const leaf = material(oklch(l, c, h), 0.95)
-    leaf.vertexColors = true
-    return leaf
-  }
-  const thujaMaterial = foliage(0.5, 0.085, 140)
-  const thujaLight = foliage(0.55, 0.09, 132)
-  const shrubMaterial = foliage(0.6, 0.075, 128)
-  const addThuja = (
-    x: number,
-    z: number,
-    height: number,
-    seed: number,
-    start: number
-  ) => {
-    const plant = mesh(
-      foliageGeometry(height, height * 0.17, seed, thujaProfile, lite),
-      seed % 2 === 0 ? thujaMaterial : thujaLight
+  // Very few plain, smooth plants in one soft green.
+  const leaf = material(oklch(0.52, 0.07, 145), 0.9)
+  const segments = lite ? 16 : 36
+  const column = (height: number) =>
+    new THREE.LatheGeometry(
+      Array.from({ length: 13 }, (_, i) => {
+        const t = i / 12
+        const width =
+          height * 0.13 * Math.min(1, 0.72 + 2 * t) * (1 - t) ** 0.75
+        return new THREE.Vector2(width, t * height)
+      }),
+      segments
     )
-    addGrow(plant, x, z, start)
+  const mound = (radius: number) => {
+    const geometry = new THREE.SphereGeometry(radius, segments, segments / 2)
+    geometry.scale(1, 0.72, 1)
+    geometry.translate(0, radius * 0.6, 0)
+    return geometry
   }
-  const addShrub = (
-    x: number,
-    z: number,
-    size: number,
-    seed: number,
-    mat: THREE.MeshStandardMaterial,
-    start: number
-  ) => {
-    const plant = mesh(
-      foliageGeometry(size, size * 0.72, seed, shrubProfile, lite),
-      mat
-    )
-    addGrow(plant, x, z, start)
-  }
-  addThuja(-12.3, 1.8, 5.2, 4, 0.85)
-  addShrub(5.1, 8.5, 1.05, 11, shrubMaterial, 0.87)
-  addShrub(8.6, 7.6, 0.9, 14, shrubMaterial, 0.89)
+  addGrow(mesh(column(5.2), leaf), -12.3, 1.8, 0.93)
+  addGrow(mesh(column(4.2), leaf), -12.7, -0.6, 0.935)
+  addGrow(mesh(mound(0.55), leaf), 5.1, 8.5, 0.94)
+  addGrow(mesh(mound(0.42), leaf), 8.6, 7.6, 0.945)
 
   /* The drawing: every edge of the finished house, plus dimension lines. */
   const edges: THREE.BufferGeometry[] = ghostSources.map(
@@ -1271,6 +1200,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     parts,
     finishParts,
     ghostMaterial,
+    plaster,
     skyMaterial,
     // On phones the house sits directly under the header, on the page's beige.
     hasSky: !lite,
@@ -1291,7 +1221,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
           materials.forEach((item) => item.dispose())
         }
       })
-      gravelMap.dispose()
+      grassMap.dispose()
       sun.shadow.map?.dispose()
     },
   }
@@ -1333,7 +1263,12 @@ export function applyProgress(house: House, scene: THREE.Scene, p: number) {
     }
   }
 
-  house.ghostMaterial.opacity = 0.62 * (1 - smooth(window01(p, 0.55, 0.86)))
+  house.plaster.color.lerpColors(
+    RAW_WALL,
+    FINISHED_WALL,
+    smooth(window01(p, 0.74, 0.8))
+  )
+  house.ghostMaterial.opacity = 0.62 * (1 - smooth(window01(p, 0.42, 0.68)))
   house.ghostMaterial.visible = house.ghostMaterial.opacity > 0.001
 
   // The day brightens and the sky warms as the house is finished.
@@ -1482,5 +1417,5 @@ export const SHOTS: Record<
   },
   "detail-gable": { progress: 1, pose: DETAIL_POSE },
   // Same camera as detail-gable: the two are swapped in the same frame.
-  "detail-shell": { progress: 0.765, shell: true, pose: DETAIL_POSE },
+  "detail-shell": { progress: 0.645, shell: true, pose: DETAIL_POSE },
 }

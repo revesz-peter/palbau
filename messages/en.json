@@ -36,9 +36,17 @@
         "name": "Roof",
         "text": "The roof goes on."
       },
-      "light": {
-        "name": "Windows and light",
-        "text": "The windows go in. The home is ready."
+      "windows": {
+        "name": "Windows and doors",
+        "text": "The windows and doors go in."
+      },
+      "interior": {
+        "name": "Interior work",
+        "text": "The facade and the interior are finished."
+      },
+      "garden": {
+        "name": "Terrace and garden",
+        "text": "The terrace and garden are finished. The home is ready."
       }
     }
   },

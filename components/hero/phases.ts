@@ -15,7 +15,9 @@ export const SCENE_QUERY =
 
 export const PHASES = [
   { key: "foundation", start: 0 },
-  { key: "walls", start: 0.2 },
-  { key: "roof", start: 0.5 },
-  { key: "light", start: 0.74 },
+  { key: "walls", start: 0.14 },
+  { key: "roof", start: 0.4 },
+  { key: "windows", start: 0.64 },
+  { key: "interior", start: 0.74 },
+  { key: "garden", start: 0.88 },
 ] as const
