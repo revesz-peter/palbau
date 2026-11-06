@@ -19,6 +19,8 @@ function oklch(l: number, c: number, h: number) {
 export const SKY_START = oklch(0.972, 0.012, 85) // --beige
 const SKY_DAY = oklch(0.915, 0.028, 82)
 const INK = oklch(0.22, 0.012, 70) // --ink
+const RAL_8019 = "#3d3635" // Grey Brown (Graubraun).
+const ROOF_DIMMING = 0.5
 const ROOM_LIGHT = oklch(0.98, 0.004, 90)
 
 const SLAB_TOP = 0.3
@@ -229,8 +231,10 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   const fabric = material(oklch(0.9, 0.006, 85), 0.95, 0, clipSlab)
   const frame = material(oklch(0.97, 0.003, 90), 0.42, 0.1, clipSlab)
   const dark = material(oklch(0.34, 0.006, 60), 0.5, 0.2, clipSlab)
-  const metalRoof = () => material(oklch(0.46, 0.005, 250), 0.68, 0.05)
-  const tile = () => material(oklch(0.36, 0.022, 45), 0.72)
+  // Every roof is RAL 8019 Grey Brown. The strong sun brightens whatever it lights,
+  // so the base colour is dimmed to read as that swatch in the finished picture.
+  const roofing = () =>
+    material(new THREE.Color(RAL_8019).multiplyScalar(ROOF_DIMMING), 0.72)
 
   const addRise = (
     object: THREE.Object3D,
@@ -953,10 +957,10 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     0.5,
     0.6
   )
-  addDrop(living.roof, metalRoof(), 0.56, 0.64)
-  addDrop(bedroom.roof, metalRoof(), 0.6, 0.68)
-  addDrop(slope(-1), tile(), 0.63, 0.7)
-  addDrop(slope(1), tile(), 0.67, 0.75)
+  addDrop(living.roof, roofing(), 0.56, 0.64)
+  addDrop(bedroom.roof, roofing(), 0.6, 0.68)
+  addDrop(slope(-1), roofing(), 0.63, 0.7)
+  addDrop(slope(1), roofing(), 0.67, 0.75)
 
   const front = slopeCentre(1)
   const eaveY = front.y - (SLOPE_LENGTH / 2) * Math.sin(PITCH) + 0.08
@@ -968,7 +972,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     { size: [0.09, eaveY - 0.25, 0.09], at: [3.5, eaveY / 2, ZF + 0.08] },
   ])
   eaveGeometry.translate((X1 + X2) / 2, 0, 0)
-  addDrop(eaveGeometry, material(oklch(0.34, 0.006, 60), 0.5, 0.2), 0.7, 0.76)
+  addDrop(eaveGeometry, roofing(), 0.7, 0.76)
   ghostSources.push(
     boxGeometry({
       size: [CENTRE_W, 0.1, SLOPE_LENGTH],
