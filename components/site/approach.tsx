@@ -25,53 +25,51 @@ export function Approach() {
         number={t("number")}
         title={t("title")}
       />
-      <div className="mt-6 grid grid-cols-12 gap-x-2 md:mt-14 md:gap-x-6">
-        <div className="col-span-12 lg:col-span-10 lg:col-start-3">
-          <Reveal>
-            <p className="max-w-[30ch] text-2xl leading-snug font-medium text-balance md:text-4xl md:leading-snug">
-              {t("body")}
-            </p>
-          </Reveal>
+      <div className="mt-6 md:mt-14">
+        <Reveal>
+          <p className="max-w-[30ch] text-2xl leading-snug font-medium text-balance md:text-4xl md:leading-snug">
+            {t("body")}
+          </p>
+        </Reveal>
 
-          <dl className="mt-8 grid gap-3 md:mt-12 md:grid-cols-3 md:gap-6">
-            {POINTS.map(({ key, Icon }, index) => (
-              <Reveal key={key} delay={index * 0.12}>
-                <div className="flex h-full items-start gap-4 border border-border bg-card p-4 transition-transform duration-500 hover:-translate-y-1 md:block md:p-7">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-secondary md:size-14">
-                    <Icon aria-hidden className="size-6 md:size-7" />
-                  </span>
-                  <div className="md:mt-6">
-                    <dt className="text-xl font-semibold md:text-2xl">
-                      {t(`points.${key}.title`)}
-                    </dt>
-                    <dd className="mt-1 text-lg leading-snug text-pretty md:mt-2">
-                      {t(`points.${key}.text`)}
-                    </dd>
-                  </div>
+        <dl className="mt-8 grid gap-3 md:mt-12 md:grid-cols-3 md:gap-6">
+          {POINTS.map(({ key, Icon }, index) => (
+            <Reveal key={key} delay={index * 0.12}>
+              <div className="flex h-full items-start gap-4 border border-border bg-card p-4 transition-transform duration-500 hover:-translate-y-1 md:block md:p-7">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-secondary md:size-14">
+                  <Icon aria-hidden className="size-6 md:size-7" />
+                </span>
+                <div className="md:mt-6">
+                  <dt className="text-xl font-semibold md:text-2xl">
+                    {t(`points.${key}.title`)}
+                  </dt>
+                  <dd className="mt-1 text-lg leading-snug text-pretty md:mt-2">
+                    {t(`points.${key}.text`)}
+                  </dd>
                 </div>
-              </Reveal>
-            ))}
-          </dl>
+              </div>
+            </Reveal>
+          ))}
+        </dl>
 
-          <div className="mt-10 md:mt-16">
-            <BuildStages
-              title={t("termsTitle")}
-              note={t("termsNote")}
-              caption={t("caption")}
-              stages={{
-                structural: {
-                  title: t("terms.structural.title"),
-                  text: t("terms.structural.text"),
-                  imageAlt: t("terms.structural.imageAlt"),
-                },
-                turnkey: {
-                  title: t("terms.turnkey.title"),
-                  text: t("terms.turnkey.text"),
-                  imageAlt: t("terms.turnkey.imageAlt"),
-                },
-              }}
-            />
-          </div>
+        <div className="mt-10 md:mt-16">
+          <BuildStages
+            title={t("termsTitle")}
+            note={t("termsNote")}
+            caption={t("caption")}
+            stages={{
+              structural: {
+                title: t("terms.structural.title"),
+                text: t("terms.structural.text"),
+                imageAlt: t("terms.structural.imageAlt"),
+              },
+              turnkey: {
+                title: t("terms.turnkey.title"),
+                text: t("terms.turnkey.text"),
+                imageAlt: t("terms.turnkey.imageAlt"),
+              },
+            }}
+          />
         </div>
       </div>
     </section>

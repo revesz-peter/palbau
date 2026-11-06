@@ -21,7 +21,7 @@ export function Contact() {
           title={t("title")}
         />
         <div className="mt-6 grid grid-cols-12 gap-x-2 gap-y-8 md:mt-16 md:gap-x-6 md:gap-y-10 lg:grid-rows-[auto_1fr]">
-          <Reveal className="col-span-12 lg:col-span-4 lg:col-start-3 lg:row-start-1 lg:pr-6">
+          <Reveal className="col-span-12 lg:col-span-5 lg:row-start-1 lg:pr-6">
             <p className="max-w-[36ch] text-xl leading-normal text-pretty">
               {t("body")}
             </p>
@@ -70,10 +70,10 @@ export function Contact() {
               </dl>
             ) : null}
           </Reveal>
-          <Reveal className="col-span-12 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1">
+          <Reveal className="col-span-12 lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
             <ContactForm />
           </Reveal>
-          <Reveal className="col-span-12 lg:col-span-4 lg:col-start-3 lg:row-start-2 lg:pr-6">
+          <Reveal className="col-span-12 lg:col-span-5 lg:row-start-2 lg:pr-6">
             <div className="border-t border-border pt-6">
               <h3 className="text-xl font-semibold">{showroom("title")}</h3>
               <p className="mt-2 max-w-[42ch] text-lg text-pretty">

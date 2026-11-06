@@ -15,7 +15,7 @@ export function LegalLayout({
   return (
     <div className="mx-auto max-w-[100rem] px-5 pt-32 pb-24 md:px-10 md:pt-44 md:pb-36">
       <div className="grid grid-cols-12 gap-x-2 md:gap-x-6">
-        <div className="col-span-12 lg:col-span-8 lg:col-start-3">
+        <div className="col-span-12 lg:col-span-8">
           <h1 className="text-[clamp(2.1rem,3.8vw,4rem)] leading-[1.12] font-semibold tracking-[-0.01em]">
             {title}
           </h1>

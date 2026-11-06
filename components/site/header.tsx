@@ -42,7 +42,7 @@ export function Header() {
           : "border-border bg-background"
       )}
     >
-      <div className="mx-auto flex h-16 max-w-[100rem] items-center justify-between gap-2 px-3 min-[420px]:gap-4 min-[420px]:px-4 md:h-[4.5rem] md:px-10">
+      <div className="mx-auto flex h-16 max-w-[100rem] items-center justify-between gap-2 px-5 min-[420px]:gap-4 md:h-[4.5rem] md:px-10">
         <Link
           href="/"
           aria-label={t("home")}

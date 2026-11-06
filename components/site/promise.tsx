@@ -28,14 +28,14 @@ export function WrittenPromise() {
         title={t("title")}
       />
       <div className="mt-6 grid grid-cols-12 gap-x-2 gap-y-6 md:mt-14 md:gap-x-6">
-        <div className="col-span-12 lg:sticky lg:top-32 lg:col-span-3 lg:col-start-3 lg:self-start">
+        <div className="col-span-12 lg:sticky lg:top-32 lg:col-span-4 lg:self-start">
           <Reveal>
             <p className="max-w-[44ch] text-xl leading-normal text-pretty">
               {t("intro")}
             </p>
           </Reveal>
         </div>
-        <div className="col-span-12 lg:col-span-6 lg:col-start-6">
+        <div className="col-span-12 lg:col-span-8">
           <PromiseCards
             label={t("cardsLabel")}
             previous={t("previous")}

@@ -1,4 +1,4 @@
-# Pál Sándor website
+# Pál Bau website
 
 Next.js 16, next-intl (Hungarian at `/`, English at `/en`), React Three Fiber, Resend.
 

@@ -12,7 +12,7 @@ type Key = "structural" | "turnkey"
 
 const KEYS = ["structural", "turnkey"] as const
 const AUTOPLAY_DELAY_MS = 1800
-const IMAGE_SIZES = "(min-width: 1024px) 50vw, 100vw"
+const IMAGE_SIZES = "(min-width: 1024px) 58vw, 100vw"
 
 /**
  * Both stills share one camera, so the finished house grows out of the shell.

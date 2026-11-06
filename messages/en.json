@@ -1,25 +1,25 @@
 {
   "meta": {
-    "title": "Sándor Pál | General contractor for family homes, Pest County",
-    "description": "Sándor Pál is a general contractor building family homes in Pest County, Hungary, from foundation to handover, with one person responsible. Book a call or tour the showroom house.",
-    "imprintTitle": "Legal notice | Sándor Pál",
-    "privacyTitle": "Privacy policy | Sándor Pál",
-    "notFoundTitle": "Page not found | Sándor Pál"
+    "title": "Pál Bau | General contractor for family homes, Pest County",
+    "description": "Pál Bau is a general contractor building family homes in Pest County, Hungary, from foundation to handover. Book a call or tour the showroom house.",
+    "imprintTitle": "Legal notice | Pál Bau",
+    "privacyTitle": "Privacy policy | Pál Bau",
+    "notFoundTitle": "Page not found | Pál Bau"
   },
   "nav": {
-    "brand": "Sándor Pál",
+    "brand": "Pál Bau",
     "skip": "Skip to content",
-    "approach": "What I do",
+    "approach": "What we do",
     "contact": "Contact",
     "cta": "Book a call",
     "ctaShort": "Book",
     "language": "Language",
-    "home": "Sándor Pál, home",
+    "home": "Pál Bau, home",
     "promise": "In writing"
   },
   "hero": {
     "title": "Family homes built, from foundation to keys.",
-    "lead": "I am Sándor Pál, a general contractor in Pest County, Hungary. One person answers for the building of your home: me.",
+    "lead": "Pál Bau is a general contractor in Pest County, Hungary. We answer for every part of the build.",
     "cta": "Book a call",
     "hint": "Scroll down and the house builds itself.",
     "alt": "Architectural model of a modern white villa with two tall wings, a tiled centre, large glazing, and a terrace with a pool.",
@@ -45,19 +45,19 @@
   "approach": {
     "number": "1",
     "title": "What does a general contractor do?",
-    "body": "You talk to one person and sign one contract. I organise the rest.",
+    "body": "You sign one contract. We organise the rest.",
     "points": {
       "people": {
         "title": "Tradespeople",
-        "text": "I find the tradespeople and coordinate their work."
+        "text": "We find the tradespeople and coordinate their work."
       },
       "materials": {
         "title": "Materials",
-        "text": "I order the materials and time the deliveries."
+        "text": "We order the materials and time the deliveries."
       },
       "responsibility": {
         "title": "Responsibility",
-        "text": "If you have a question or find a fault, you call me."
+        "text": "If you have a question or find a fault, you call us."
       }
     },
     "caption": "Model of the house. Illustration.",
@@ -78,13 +78,13 @@
   },
   "showroom": {
     "title": "See it for yourself.",
-    "body": "My office is a showroom house. Here you can see my work with your own eyes, and we can talk through your ideas without hurry. Visits are by appointment.",
-    "addressPending": "I will share the exact address when we arrange your visit."
+    "body": "Our office is a showroom house. Here you can see our work with your own eyes, and we can talk through your ideas without hurry. Visits are by appointment.",
+    "addressPending": "We will share the exact address when we arrange your visit."
   },
   "contact": {
     "number": "3",
     "title": "Let's talk about your house.",
-    "body": "Tell me what kind of house you are planning, and I will get in touch.",
+    "body": "Tell us what kind of house you are planning, and we will get in touch.",
     "book": "Book a time",
     "bookNote": "Booking takes place on Cal.com.",
     "phoneLabel": "Phone",
@@ -93,21 +93,21 @@
       "name": "Name",
       "email": "Email address",
       "phone": "Phone number (optional)",
-      "message": "How can I help?",
+      "message": "How can we help?",
       "consentBefore": "I have read the ",
       "consentLink": "privacy policy",
       "consentAfter": " and agree to being contacted using these details.",
       "honeypot": "Website (leave empty)",
       "submit": "Send message",
       "sending": "Sending",
-      "sent": "Message sent. I will reply soon to the email address you provided.",
-      "messageHint": "For example, tell me where the plot is and how large a house you would like."
+      "sent": "Message sent. We will reply soon to the email address you provided.",
+      "messageHint": "For example, tell us where the plot is and how large a house you would like."
     },
     "errors": {
       "name": "Enter your name.",
       "email": "Enter a valid email address.",
       "phone": "A phone number can only contain digits and the usual symbols.",
-      "message": "Write at least a few words about how I can help.",
+      "message": "Write at least a few words about how we can help.",
       "messageLong": "The message is too long. Shorten it to 4000 characters.",
       "consent": "Accept the privacy policy to send your message.",
       "invalid": "The message was not sent. Check the fields and send it again.",
@@ -184,11 +184,11 @@
       },
       "price": {
         "question": "What will the final price be?",
-        "answer": "The contract sets the price. I tell you the cost of any change first, and it only goes ahead with your approval."
+        "answer": "The contract sets the price. We tell you the cost of any change first, and it only goes ahead with your approval."
       },
       "time": {
         "question": "When will the house be finished?",
-        "answer": "The schedule and the handover date are in the contract. If anything changes, I tell you in good time."
+        "answer": "The schedule and the handover date are in the contract. If anything changes, we tell you in good time."
       },
       "payment": {
         "question": "When do I have to pay?",
@@ -196,7 +196,7 @@
       },
       "defects": {
         "question": "Who do I contact if I find a fault?",
-        "answer": "Me. The warranty terms are in the contract."
+        "answer": "Us. The warranty terms are in the contract."
       },
       "inspection": {
         "question": "Can I check the work?",

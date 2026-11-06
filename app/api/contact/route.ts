@@ -4,7 +4,7 @@ import { renderInquiryEmail } from "@/lib/contact-email"
 import { contactSchema } from "@/lib/contact-schema"
 
 const MAX_BODY_BYTES = 16_000
-const DEFAULT_FROM = "Pal Sandor weboldal <onboarding@resend.dev>"
+const DEFAULT_FROM = "Pal Bau weboldal <onboarding@resend.dev>"
 
 function respond(status: number, body: { ok: boolean; error?: string }) {
   return Response.json(body, { status })

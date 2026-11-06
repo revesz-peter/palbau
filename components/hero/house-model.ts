@@ -19,7 +19,7 @@ function oklch(l: number, c: number, h: number) {
 export const SKY_START = oklch(0.972, 0.012, 85) // --beige
 const SKY_DAY = oklch(0.915, 0.028, 82)
 const INK = oklch(0.22, 0.012, 70) // --ink
-const WARM_LIGHT = oklch(0.9, 0.08, 82)
+const ROOM_LIGHT = oklch(0.98, 0.004, 90)
 
 const SLAB_TOP = 0.3
 const UP = new THREE.Vector3(0, 1, 0)
@@ -225,10 +225,8 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   const deckBase = material(oklch(0.74, 0.008, 80), 0.9, 0, clipBoard)
   const stone = material(oklch(0.84, 0.014, 80), 0.68, 0, clipBoard)
   const coping = material(oklch(0.97, 0.004, 90), 0.6, 0, clipBoard)
-  const oakFloor = material(oklch(0.8, 0.05, 78), 0.55, 0, clipSlab)
-  const oak = material(oklch(0.68, 0.075, 68), 0.6, 0, clipSlab)
-  const fabric = material(oklch(0.86, 0.014, 80), 0.95, 0, clipSlab)
-  const accent = material(oklch(0.84, 0.15, 92), 0.7, 0, clipSlab)
+  const whiteFloor = material(oklch(0.94, 0.005, 85), 0.5, 0, clipSlab)
+  const fabric = material(oklch(0.9, 0.006, 85), 0.95, 0, clipSlab)
   const frame = material(oklch(0.97, 0.003, 90), 0.42, 0.1, clipSlab)
   const dark = material(oklch(0.34, 0.006, 60), 0.5, 0.2, clipSlab)
   const metalRoof = () => material(oklch(0.46, 0.005, 250), 0.68, 0.05)
@@ -469,18 +467,52 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   } as const
   const SIDE_WINDOWS = [-2.8, -0.2, 2.4] // Centres along the east wall.
   const SIDE_WIDTH = 1.5
+  // The far wing's outer wall: a door and a window to the rooms behind the inner
+  // wall, then a big glass in the kitchen, like the ones on the terrace front.
+  const STREET_DOOR = [-3.96, -3.22] as const
+  const STREET_WINDOW = [-2.42, -1.98] as const
+  const STREET_SILL = 1.25
+  const KITCHEN_GLASS = [-0.2, 1.4, 3] as const
   const BACK_WINDOWS = [-2.6, 1] // Left edges in the back of the centre.
+  const STREET_HEAD = 2.6
+  // Rooms along the back lie behind this wall. The TV hangs on its terrace side.
+  const INNER_Z = -1.6
+  const INNER_FACE = INNER_Z + 0.2
+  const ROOM_OPENING = { z0: INNER_FACE, z1: ZF - 0.65, head: 3 }
 
   // Living wing: back, outer, inner, then the terrace front.
   addWall(wallGeometry(livingProfile, [], WALL), { z: ZB }, 0.2, PEAK)
   addWall(
-    wallGeometry(rect(ZB, SLAB_TOP, ZF, EAVE), [], WALL),
+    wallGeometry(
+      rect(ZB, SLAB_TOP, ZF, EAVE),
+      [
+        rect(STREET_DOOR[0], S, STREET_DOOR[1], STREET_HEAD),
+        rect(STREET_WINDOW[0], STREET_SILL, STREET_WINDOW[1], STREET_HEAD),
+        rect(KITCHEN_GLASS[0], S, KITCHEN_GLASS[2], HEAD),
+      ],
+      WALL
+    ),
     { x: X0 + WALL, alongZ: true },
     0.22,
     EAVE
   )
+  // Open below the beam: the wing and the centre are one room. The wall above
+  // it is the tall gable that shows over the tiled roof.
   addWall(
-    wallGeometry(rect(ZB, SLAB_TOP, ZF, PEAK), [], WALL),
+    wallGeometry(
+      [
+        [ZB, SLAB_TOP],
+        [ROOM_OPENING.z0, SLAB_TOP],
+        [ROOM_OPENING.z0, ROOM_OPENING.head],
+        [ROOM_OPENING.z1, ROOM_OPENING.head],
+        [ROOM_OPENING.z1, SLAB_TOP],
+        [ZF, SLAB_TOP],
+        [ZF, PEAK],
+        [ZB, PEAK],
+      ],
+      [],
+      WALL
+    ),
     { x: X1, alongZ: true },
     0.24,
     PEAK
@@ -555,6 +587,12 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     0.38,
     EAVE
   )
+  addWall(
+    wallGeometry(rect(X0 + WALL, SLAB_TOP, X2, EAVE), [], 0.2),
+    { z: INNER_Z },
+    0.37,
+    EAVE
+  )
 
   // Interior, seen later through the glass.
   const interiorStart = parts.length
@@ -571,25 +609,116 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
           at: [(X2 + X3) / 2, floorY, (ZR + ZF) / 2],
         },
       ]),
-      oakFloor
+      whiteFloor
     ),
     0.2,
     0.26,
     0.05
   )
+  // One white great room, from the far wing to the middle of the house. Far end:
+  // a kitchen counter around the corner, up to the big side glass. Then a table,
+  // a lot of open floor, and the corner couch near the door, facing the TV.
+  const FLOOR = SLAB_TOP
+  const WORKTOP = FLOOR + 0.9
+  const COUNTER_DEPTH = 0.66
+  const KITCHEN = {
+    x0: X0 + WALL,
+    x1: -7.2,
+    z: INNER_FACE + COUNTER_DEPTH / 2,
+    sideX: X0 + WALL + COUNTER_DEPTH / 2,
+    sideEnd: KITCHEN_GLASS[0] - 0.1,
+  }
+  const KITCHEN_FRONT = INNER_FACE + COUNTER_DEPTH
+  const SIDE_FRONT = X0 + WALL + COUNTER_DEPTH
+  const TABLE_TOP = FLOOR + 0.76
+  const COUCH = { x: 0.05, width: 2.9, z: 1.7, depth: 1 }
+  const TV_X = 0.1
+
+  // A chair whose back is towards (dx, dz), so that it faces the opposite way.
+  const chair = (x: number, z: number, dx: number, dz: number): BoxSpec[] => [
+    { size: [0.46, 0.05, 0.46], at: [x, FLOOR + 0.46, z] },
+    {
+      size: dx ? [0.04, 0.34, 0.46] : [0.46, 0.34, 0.04],
+      at: [x + dx * 0.21, FLOOR + 0.66, z + dz * 0.21],
+    },
+    ...[-0.2, 0.2].flatMap((legX) =>
+      [-0.2, 0.2].map((legZ): BoxSpec => ({
+        size: [0.03, 0.44, 0.03],
+        at: [x + legX, FLOOR + 0.22, z + legZ],
+      }))
+    ),
+  ]
+  // A table on four legs.
+  const table = (x: number, z: number, width: number, depth: number) => [
+    {
+      size: [width, 0.05, depth],
+      at: [x, TABLE_TOP, z],
+    } satisfies BoxSpec,
+    ...[-1, 1].flatMap((sideX) =>
+      [-1, 1].map((sideZ): BoxSpec => ({
+        size: [0.06, 0.74, 0.06],
+        at: [
+          x + sideX * (width / 2 - 0.08),
+          FLOOR + 0.37,
+          z + sideZ * (depth / 2 - 0.08),
+        ],
+      }))
+    ),
+  ]
+  // Shallow joints in a cabinet front, so that it reads as doors from afar.
+  const jointsAlongX = (
+    x0: number,
+    x1: number,
+    count: number,
+    height: number
+  ) =>
+    Array.from({ length: count + 1 }, (_, i): BoxSpec => ({
+      size: [0.015, height, 0.01],
+      at: [x0 + ((x1 - x0) * i) / count, FLOOR + height / 2, KITCHEN_FRONT],
+    }))
+  const jointsAlongZ = (z0: number, z1: number, count: number) =>
+    Array.from({ length: count + 1 }, (_, i): BoxSpec => ({
+      size: [0.01, 0.9, 0.015],
+      at: [SIDE_FRONT, FLOOR + 0.45, z0 + ((z1 - z0) * i) / count],
+    }))
+
   addRise(
     mesh(
       boxes([
-        // Partition behind the kitchen and bedroom, kitchen run, island.
-        { size: [X2 - X1, 2.8, 0.15], at: [0, 1.7, -2] },
+        // Bedroom wing behind its own partition.
         { size: [X3 - X2, 2.8, 0.15], at: [(X2 + X3) / 2, 1.7, 0.4] },
-        { size: [5.2, 2.2, 0.62], at: [-0.5, 1.4, -1.6] },
-        { size: [2.7, 0.92, 0.95], at: [-1.7, 0.76, 0.6] },
-        // Sofa in the living wing.
-        { size: [3.2, 0.42, 1], at: [-7, 0.51, 0.6] },
-        { size: [3.2, 0.5, 0.25], at: [-7, 0.92, 0.2] },
-        // Bed in the bedroom wing.
         { size: [2, 0.5, 2.2], at: [7, 0.55, 2.3] },
+        { size: [2.2, 1.4, 0.1], at: [7, 1, 1.15] },
+        // Kitchen counter around the far corner, with a white worktop.
+        {
+          size: [KITCHEN.x1 - KITCHEN.x0, 0.94, COUNTER_DEPTH],
+          at: [(KITCHEN.x0 + KITCHEN.x1) / 2, FLOOR + 0.47, KITCHEN.z],
+        },
+        {
+          size: [COUNTER_DEPTH, 0.94, KITCHEN.sideEnd - KITCHEN_FRONT],
+          at: [
+            KITCHEN.sideX,
+            FLOOR + 0.47,
+            (KITCHEN.sideEnd + KITCHEN_FRONT) / 2,
+          ],
+        },
+        // Tall cupboards at the end of the counter.
+        {
+          size: [1, 2.4, COUNTER_DEPTH],
+          at: [KITCHEN.x1 + 0.5, FLOOR + 1.2, KITCHEN.z],
+        },
+        // The table, a bit closer, with chairs around it.
+        ...table(-6.8, 1, 2, 1),
+        ...chair(-7.3, 1.85, 0, 1),
+        ...chair(-6.3, 1.85, 0, 1),
+        ...chair(-7.3, 0.15, 0, -1),
+        ...chair(-6.3, 0.15, 0, -1),
+        // Low unit under the TV and a low table in front of the couch.
+        {
+          size: [2.6, 0.42, 0.42],
+          at: [TV_X, FLOOR + 0.21, INNER_FACE + 0.21],
+        },
+        { size: [1.1, 0.34, 0.7], at: [0.35, FLOOR + 0.17, 0.2] },
       ]),
       interior
     ),
@@ -597,45 +726,34 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     0.42,
     3.2
   )
+  // The white corner couch, with its long back towards the terrace glass.
   addRise(
     mesh(
       boxes([
-        { size: [2.8, 0.04, 1.05], at: [-1.7, 1.24, 0.6] },
-        { size: [1.4, 0.05, 0.8], at: [-7, 0.67, 2.1] },
-        { size: [2.2, 1.4, 0.1], at: [7, 1, 1.15] },
-      ]),
-      oak
-    ),
-    0.34,
-    0.44,
-    2
-  )
-  addRise(
-    mesh(
-      boxes([
-        { size: [1, 0.22, 1], at: [-5.1, 0.45, 1.5] },
-        { size: [3.8, 0.012, 2.8], at: [-7, floorY + 0.02, 1.6] },
+        {
+          size: [COUCH.width, 0.42, COUCH.depth],
+          at: [COUCH.x, FLOOR + 0.21, COUCH.z],
+        },
+        {
+          size: [COUCH.width, 0.46, 0.26],
+          at: [COUCH.x, FLOOR + 0.63, COUCH.z + COUCH.depth / 2 - 0.13],
+        },
+        {
+          size: [1, 0.42, 1.5],
+          at: [COUCH.x - COUCH.width / 2 + 0.5, FLOOR + 0.21, COUCH.z - 1.25],
+        },
+        {
+          size: [0.26, 0.46, 2.5],
+          at: [COUCH.x - COUCH.width / 2 + 0.13, FLOOR + 0.63, COUCH.z - 0.75],
+        },
       ]),
       fabric
-    ),
-    0.36,
-    0.44,
-    1
-  )
-  // The yellow chair of the dining room, and vertical blinds beside it.
-  addRise(
-    mesh(
-      boxes([
-        { size: [0.55, 0.08, 0.55], at: [0.7, 0.78, 1.8] },
-        { size: [0.55, 0.6, 0.07], at: [0.7, 1.08, 1.53] },
-        { size: [0.1, 0.42, 0.1], at: [0.7, 0.54, 1.8] },
-      ]),
-      accent
     ),
     0.38,
     0.46,
     1.4
   )
+  // Vertical blinds on the outer end of the dining glass.
   const blindSpecs: BoxSpec[] = []
   for (let x = 1.4; x < OPENINGS.dining[1]; x += 0.11) {
     blindSpecs.push({
@@ -645,20 +763,35 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     })
   }
   addRise(mesh(boxes(blindSpecs), fabric), 0.4, 0.48, 3)
-  // Pendants above the island.
   addRise(
     mesh(
-      boxes(
-        [-2.5, -1.7, -0.9].flatMap((x): BoxSpec[] => [
-          { size: [0.02, 1.2, 0.02], at: [x, 2.65, 0.6] },
-          { size: [0.2, 0.16, 0.2], at: [x, 2.05, 0.6] },
-        ])
-      ),
+      boxes([
+        // The TV on the inner wall, in front of the couch.
+        {
+          size: [1.6, 0.92, 0.05],
+          at: [TV_X, FLOOR + 1.02, INNER_FACE + 0.03],
+        },
+        // The hob, the only dark thing in the kitchen.
+        { size: [0.8, 0.012, 0.5], at: [-8.4, WORKTOP + 0.05, KITCHEN.z] },
+      ]),
       dark
     ),
     0.42,
     0.5,
     3
+  )
+  addRise(
+    mesh(
+      boxes([
+        ...jointsAlongX(KITCHEN.x0 + COUNTER_DEPTH, KITCHEN.x1, 3, 0.9),
+        ...jointsAlongX(KITCHEN.x1, KITCHEN.x1 + 1, 2, 2.4),
+        ...jointsAlongZ(KITCHEN_FRONT, KITCHEN.sideEnd, 1),
+      ]),
+      material(oklch(0.8, 0.006, 80), 0.8, 0, clipSlab)
+    ),
+    0.3,
+    0.42,
+    3.2
   )
 
   finishParts.push(...parts.slice(interiorStart))
@@ -788,6 +921,32 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       })
     }
   }
+  // The steel beam of the main room, running from the inner wall to the terrace
+  // front just under the eave, over the pier between the two glass openings.
+  const BEAM = {
+    x: (X1 + X2) / 2,
+    z0: INNER_Z,
+    z1: ZF - WALL / 2,
+    top: EAVE - 0.02,
+  }
+  const beamLength = BEAM.z1 - BEAM.z0
+  const beamZ = (BEAM.z0 + BEAM.z1) / 2
+  const beam = boxes([
+    {
+      size: [0.22, 0.03, beamLength],
+      at: [BEAM.x, BEAM.top - 0.015, beamZ],
+    },
+    {
+      size: [0.03, 0.3, beamLength],
+      at: [BEAM.x, BEAM.top - 0.18, beamZ],
+    },
+    {
+      size: [0.22, 0.03, beamLength],
+      at: [BEAM.x, BEAM.top - 0.345, beamZ],
+    },
+  ])
+  addDrop(beam, material(oklch(0.34, 0.008, 250), 0.45, 0.6), 0.46, 0.54)
+  ghostSources.push(beam)
   addDrop(
     mergeGeometries([boxes(rafterSpecs), living.rafters, bedroom.rafters]),
     material(oklch(0.72, 0.07, 72), 0.75),
@@ -880,6 +1039,10 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   SIDE_WINDOWS.forEach((z) =>
     glazeAlongZ(z - SIDE_WIDTH / 2, z + SIDE_WIDTH / 2, S, HEAD, X3 - REVEAL)
   )
+  glazeAlongZ(...STREET_WINDOW, STREET_SILL, STREET_HEAD, X0 + REVEAL)
+  glazeAlongZ(KITCHEN_GLASS[0], KITCHEN_GLASS[1], S, HEAD, X0 + REVEAL)
+  glazeAlongZ(KITCHEN_GLASS[1], KITCHEN_GLASS[2], S, HEAD, X0 + REVEAL)
+  glazeAlongZ(...STREET_DOOR, S, STREET_HEAD, X0 + REVEAL)
   BACK_WINDOWS.forEach((x) => glazeAlongX(x, x + 1.6, 1, 2.5, ZB + REVEAL, 1))
   const frames = boxes(frameSpecs)
   const framesStart = parts.length
@@ -888,12 +1051,12 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   ghostSources.push(frames)
 
   const glassMaterial = new THREE.MeshStandardMaterial({
-    color: oklch(0.82, 0.03, 230),
+    color: oklch(0.72, 0.012, 230),
     metalness: 0.6,
     roughness: 0.05,
     transparent: true,
     opacity: 0,
-    envMapIntensity: 1.5,
+    envMapIntensity: 0.7,
     depthWrite: false,
   })
   const glass = new THREE.Mesh(boxes(glassSpecs), glassMaterial)
@@ -985,8 +1148,6 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   const thujaMaterial = foliage(0.5, 0.085, 140)
   const thujaLight = foliage(0.55, 0.09, 132)
   const shrubMaterial = foliage(0.6, 0.075, 128)
-  const shrubWarm = foliage(0.46, 0.05, 30)
-  const olive = foliage(0.64, 0.05, 130)
   const addThuja = (
     x: number,
     z: number,
@@ -1014,35 +1175,9 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     )
     addGrow(plant, x, z, start)
   }
-  // A dark hedge line behind the house, so that the white walls stand out.
-  ;[-11.6, -9.9, -8.2, -6.5, -4.8, 5.2, 6.9, 8.6, 10.3, 12].forEach((x, i) =>
-    addThuja(x, -6.3, 7.4 - (i % 3) * 0.7, 30 + i, 0.84 + (i % 4) * 0.01)
-  )
   addThuja(-12.3, 1.8, 5.2, 4, 0.85)
-  addThuja(-12.4, 8.4, 3.8, 6, 0.87)
-  addThuja(12.6, 3.4, 4.8, 7, 0.87)
-  addThuja(12.8, 8.6, 3.6, 9, 0.88)
   addShrub(5.1, 8.5, 1.05, 11, shrubMaterial, 0.87)
-  addShrub(6.5, 8.1, 0.7, 12, shrubWarm, 0.88)
   addShrub(8.6, 7.6, 0.9, 14, shrubMaterial, 0.89)
-  addShrub(10.3, 8.4, 0.7, 15, shrubWarm, 0.89)
-  addShrub(7.2, 12.6, 1, 17, shrubMaterial, 0.9)
-  addShrub(-3.6, 13.6, 0.8, 18, shrubMaterial, 0.9)
-  addShrub(-7.6, 13.9, 0.6, 19, shrubWarm, 0.9)
-
-  const oliveTree = new THREE.Group()
-  const oliveTrunk = mesh(
-    new THREE.CylinderGeometry(0.05, 0.08, 1.2, 8),
-    material(oklch(0.48, 0.02, 60), 0.9)
-  )
-  oliveTrunk.position.y = 0.6
-  const oliveCrown = mesh(
-    foliageGeometry(1.5, 0.95, 21, shrubProfile, lite),
-    olive
-  )
-  oliveCrown.position.y = 1
-  oliveTree.add(oliveTrunk, oliveCrown)
-  addGrow(oliveTree, 11.2, 11.8, 0.88)
 
   /* The drawing: every edge of the finished house, plus dimension lines. */
   const edges: THREE.BufferGeometry[] = ghostSources.map(
@@ -1107,23 +1242,23 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
 
   const interiorLights = (
     [
-      [-1.5, 2.6, 0.5, 11],
+      [-3, 2.6, -0.5, 11],
       [-7, 3, 0.5, 10],
       [7, 3, 2.5, 8],
     ] as const
   )
     .slice(0, lite ? 1 : undefined)
     .map(([x, y, z, power]) => {
-      const light = new THREE.PointLight(WARM_LIGHT, 0, 10, 1.6)
+      const light = new THREE.PointLight(ROOM_LIGHT, 0, 10, 1.6)
       light.position.set(x, y, z)
       light.userData.power = power
       root.add(light)
       return light
     })
 
-  const warmSurfaces = [interior, oakFloor, fabric]
-  warmSurfaces.forEach((surface) => {
-    surface.emissive = WARM_LIGHT.clone()
+  const glowSurfaces = [interior, whiteFloor, fabric]
+  glowSurfaces.forEach((surface) => {
+    surface.emissive = ROOM_LIGHT.clone()
     surface.emissiveIntensity = 0
   })
 
@@ -1138,7 +1273,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     sun,
     hemisphere,
     interiorLights,
-    warmSurfaces,
+    glowSurfaces,
     dispose() {
       root.traverse((object) => {
         if (
@@ -1206,7 +1341,7 @@ export function applyProgress(house: House, scene: THREE.Scene, p: number) {
   house.interiorLights.forEach((light) => {
     light.intensity = (light.userData.power as number) * day
   })
-  house.warmSurfaces.forEach((surface) => {
+  house.glowSurfaces.forEach((surface) => {
     surface.emissiveIntensity = 0.3 * day
   })
 }

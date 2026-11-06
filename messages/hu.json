@@ -1,25 +1,25 @@
 {
   "meta": {
-    "title": "Pál Sándor | Családi házak generálkivitelezése, Pest vármegye",
-    "description": "Pál Sándor generálkivitelező családi házakat épít Pest vármegyében, az alaptól a kulcsátadásig, egy felelőssel. Kérjen időpontot, és nézze meg a bemutatóházat.",
-    "imprintTitle": "Impresszum | Pál Sándor",
-    "privacyTitle": "Adatvédelmi tájékoztató | Pál Sándor",
-    "notFoundTitle": "Az oldal nem található | Pál Sándor"
+    "title": "Pál Bau | Családi házak generálkivitelezése, Pest vármegye",
+    "description": "A Pál Bau generálkivitelező családi házakat épít Pest vármegyében, az alaptól a kulcsátadásig. Kérjen időpontot, és nézze meg a bemutatóházat.",
+    "imprintTitle": "Impresszum | Pál Bau",
+    "privacyTitle": "Adatvédelmi tájékoztató | Pál Bau",
+    "notFoundTitle": "Az oldal nem található | Pál Bau"
   },
   "nav": {
-    "brand": "Pál Sándor",
+    "brand": "Pál Bau",
     "skip": "Ugrás a tartalomra",
-    "approach": "Mit vállalok",
+    "approach": "Mit vállalunk",
     "contact": "Kapcsolat",
     "cta": "Időpontot kérek",
     "ctaShort": "Időpont",
     "language": "Nyelv",
-    "home": "Pál Sándor, kezdőlap",
+    "home": "Pál Bau, kezdőlap",
     "promise": "Írásban"
   },
   "hero": {
     "title": "Családi házak építése, az alaptól a kulcsokig.",
-    "lead": "Pál Sándor vagyok, generálkivitelező Pest vármegyében. Az Ön házának építéséért egy ember felel: én.",
+    "lead": "A Pál Bau generálkivitelező Pest vármegyében. Az építkezés minden részéért mi felelünk.",
     "cta": "Időpontot kérek",
     "hint": "Görgessen lefelé, és a ház felépül.",
     "alt": "Modern, fehér villa építészeti makettje két magas szárnnyal, cseréptetős középső résszel, nagy üvegfelületekkel, terasszal és medencével.",
@@ -45,19 +45,19 @@
   "approach": {
     "number": "1",
     "title": "Mit jelent a generálkivitelezés?",
-    "body": "Ön egy emberrel beszél, és egy szerződést köt. A többit én szervezem.",
+    "body": "Ön egy szerződést köt, a többit mi szervezzük.",
     "points": {
       "people": {
         "title": "Szakemberek",
-        "text": "Én keresem meg és hangolom össze a szakembereket."
+        "text": "Mi keressük meg és hangoljuk össze a szakembereket."
       },
       "materials": {
         "title": "Anyagok",
-        "text": "Én rendelem meg az anyagokat, és időzítem a szállítást."
+        "text": "Mi rendeljük meg az anyagokat, és időzítjük a szállítást."
       },
       "responsibility": {
         "title": "Felelősség",
-        "text": "Ha kérdése van, vagy hibát talál, engem hív."
+        "text": "Ha kérdése van, vagy hibát talál, minket hív."
       }
     },
     "caption": "A ház modellje. Illusztráció.",
@@ -78,13 +78,13 @@
   },
   "showroom": {
     "title": "Nézze meg személyesen.",
-    "body": "Az irodám egy bemutatóház. Itt a saját szemével láthatja a munkámat, és nyugodtan átbeszéljük az elképzeléseit. A látogatáshoz előzetes egyeztetés szükséges.",
-    "addressPending": "A pontos címet az időpont egyeztetésekor adom meg."
+    "body": "Az irodánk egy bemutatóház. Itt a saját szemével láthatja a munkánkat, és nyugodtan átbeszéljük az elképzeléseit. A látogatáshoz előzetes egyeztetés szükséges.",
+    "addressPending": "A pontos címet az időpont egyeztetésekor adjuk meg."
   },
   "contact": {
     "number": "3",
     "title": "Beszéljünk a házáról.",
-    "body": "Írja meg, milyen házat tervez, és felveszem Önnel a kapcsolatot.",
+    "body": "Írja meg, milyen házat tervez, és felvesszük Önnel a kapcsolatot.",
     "book": "Időpontot foglalok",
     "bookNote": "A foglalás a Cal.com oldalán történik.",
     "phoneLabel": "Telefon",
@@ -93,21 +93,21 @@
       "name": "Név",
       "email": "E-mail-cím",
       "phone": "Telefonszám (nem kötelező)",
-      "message": "Miben segíthetek?",
+      "message": "Miben segíthetünk?",
       "consentBefore": "Elolvastam az ",
       "consentLink": "adatvédelmi tájékoztatót",
-      "consentAfter": ", és hozzájárulok, hogy felvegye velem a kapcsolatot.",
+      "consentAfter": ", és hozzájárulok, hogy felvegyék velem a kapcsolatot.",
       "honeypot": "Weboldal (hagyja üresen)",
       "submit": "Üzenet küldése",
       "sending": "Küldés folyamatban",
-      "sent": "Üzenet elküldve. Hamarosan válaszolok az Ön által megadott e-mail-címen.",
+      "sent": "Üzenet elküldve. Hamarosan válaszolunk az Ön által megadott e-mail-címen.",
       "messageHint": "Írja meg például, hol van a telek, és mekkora házat szeretne."
     },
     "errors": {
       "name": "Adja meg a nevét.",
       "email": "Adjon meg érvényes e-mail-címet.",
       "phone": "A telefonszám csak számokat és a szokásos jeleket tartalmazhatja.",
-      "message": "Írjon legalább néhány szót arról, miben segíthetek.",
+      "message": "Írjon legalább néhány szót arról, miben segíthetünk.",
       "messageLong": "Az üzenet túl hosszú. Rövidítse le 4000 karakterre.",
       "consent": "Az üzenet elküldéséhez fogadja el az adatvédelmi tájékoztatót.",
       "invalid": "Az üzenet nem ment el. Ellenőrizze a mezőket, és küldje el újra.",
@@ -184,11 +184,11 @@
       },
       "price": {
         "question": "Mennyi lesz a végső ár?",
-        "answer": "Az árat a szerződés rögzíti. Minden változtatás költségét előre megmondom, és csak az Ön jóváhagyásával készül el."
+        "answer": "Az árat a szerződés rögzíti. Minden változtatás költségét előre megmondjuk, és csak az Ön jóváhagyásával készül el."
       },
       "time": {
         "question": "Mikor lesz kész a ház?",
-        "answer": "Az ütemterv és az átadás határideje a szerződésben szerepel. Ha valami változik, időben szólok."
+        "answer": "Az ütemterv és az átadás határideje a szerződésben szerepel. Ha valami változik, időben szólunk."
       },
       "payment": {
         "question": "Mikor kell fizetnem?",
@@ -196,7 +196,7 @@
       },
       "defects": {
         "question": "Kihez fordulhatok, ha hibát találok?",
-        "answer": "Hozzám. A jótállás feltételeit a szerződés tartalmazza."
+        "answer": "Hozzánk. A jótállás feltételeit a szerződés tartalmazza."
       },
       "inspection": {
         "question": "Ellenőrizhetem a munkát?",
