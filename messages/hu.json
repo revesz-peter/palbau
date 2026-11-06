@@ -44,9 +44,9 @@
         "name": "Belső munkák",
         "text": "Elkészül a homlokzat és a belső tér."
       },
-      "garden": {
-        "name": "Terasz és kert",
-        "text": "Elkészül a terasz és a kert. Kész az otthon."
+      "terrace": {
+        "name": "Terasz",
+        "text": "Elkészül a terasz. Kész az otthon."
       }
     }
   },
@@ -80,7 +80,7 @@
       "turnkey": {
         "title": "Kulcsrakész",
         "text": "A ház beköltözhető állapotban készül el.",
-        "imageAlt": "A kész ház modellje ablakokkal, berendezett szobákkal, terasszal és kerttel."
+        "imageAlt": "A kész ház modellje ablakokkal, berendezett szobákkal, és terasszal."
       }
     }
   },

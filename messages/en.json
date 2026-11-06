@@ -44,9 +44,9 @@
         "name": "Interior work",
         "text": "The facade and the interior are finished."
       },
-      "garden": {
-        "name": "Terrace and garden",
-        "text": "The terrace and garden are finished. The home is ready."
+      "terrace": {
+        "name": "Terrace",
+        "text": "The terrace is finished. The home is ready."
       }
     }
   },
@@ -80,7 +80,7 @@
       "turnkey": {
         "title": "Turnkey (kulcsrakész)",
         "text": "The house is finished and ready to move into.",
-        "imageAlt": "Model of the finished house, with windows, furnished rooms, a terrace and a garden."
+        "imageAlt": "Model of the finished house, with windows, furnished rooms, and a terrace."
       }
     }
   },

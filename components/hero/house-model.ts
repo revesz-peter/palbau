@@ -16,17 +16,6 @@ function oklch(l: number, c: number, h: number) {
   )
 }
 
-/** Seeded, so that the canvas and the rendered posters always match. */
-function seededRandom(seed: number) {
-  let state = seed
-  return () => {
-    state = (state + 0x6d2b79f5) | 0
-    let t = Math.imul(state ^ (state >>> 15), 1 | state)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
-}
-
 export const SKY_START = oklch(0.972, 0.012, 85) // --beige
 const SKY_DAY = oklch(0.915, 0.028, 82)
 const RAW_WALL = oklch(0.84, 0.014, 75) // Bare pale blocks, before render.
@@ -101,38 +90,7 @@ function mesh(geometry: THREE.BufferGeometry, mat: THREE.Material) {
   return object
 }
 
-function grassTexture(lite: boolean) {
-  const size = lite ? 512 : 1024
-  const canvas = document.createElement("canvas")
-  canvas.width = size
-  canvas.height = size
-  const context = canvas.getContext("2d")!
-  context.fillStyle = "#6f8a4e"
-  context.fillRect(0, 0, size, size)
-  const random = seededRandom(7)
-  const blades = ["#7d9a58", "#64804a", "#8aa765", "#587441", "#95b070"]
-  context.lineWidth = lite ? 1.5 : 2
-  context.lineCap = "round"
-  for (let i = 0; i < (lite ? 9000 : 36000); i++) {
-    const x = random() * size
-    const y = random() * size
-    const angle = random() * Math.PI * 2
-    const length = 3 + random() * 6
-    context.strokeStyle = blades[Math.floor(random() * blades.length)]
-    context.beginPath()
-    context.moveTo(x, y)
-    context.lineTo(x + Math.cos(angle) * length, y + Math.sin(angle) * length)
-    context.stroke()
-  }
-  const texture = new THREE.CanvasTexture(canvas)
-  texture.colorSpace = THREE.SRGBColorSpace
-  texture.wrapS = THREE.RepeatWrapping
-  texture.wrapT = THREE.RepeatWrapping
-  texture.anisotropy = 8
-  return texture
-}
-
-type PartKind = "rise" | "drop" | "fade" | "grow"
+type PartKind = "rise" | "drop" | "fade"
 
 type Part = {
   object: THREE.Object3D
@@ -226,25 +184,6 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
       end,
       travel: 5,
       materials: [mat],
-      opacity: 1,
-    })
-  }
-
-  const addGrow = (
-    object: THREE.Object3D,
-    x: number,
-    z: number,
-    start: number
-  ) => {
-    object.position.set(x, 0, z)
-    root.add(object)
-    parts.push({
-      object,
-      kind: "grow",
-      start,
-      end: start + 0.05,
-      travel: 0,
-      materials: [],
       opacity: 1,
     })
   }
@@ -931,7 +870,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     })
   )
 
-  /* Phase 4: frames, glass, light, then the garden. */
+  /* Phase 4: frames, glass and light, then the terrace. */
   const frameSpecs: BoxSpec[] = []
   const glassSpecs: BoxSpec[] = []
   const BAR = 0.06
@@ -1021,23 +960,7 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
     opacity: 0.16,
   })
 
-  // A lawn over the board, and the water in the pool.
-  const grassMap = grassTexture(lite)
-  grassMap.repeat.set(7, 6)
-  const grassMaterial = new THREE.MeshStandardMaterial({
-    map: grassMap,
-    roughness: 1,
-    transparent: true,
-    opacity: 0,
-  })
-  const grass = new THREE.Mesh(
-    new THREE.PlaneGeometry(BOARD.width, BOARD.depth),
-    grassMaterial
-  )
-  grass.rotation.x = -Math.PI / 2
-  grass.position.set(0, 0.004, BOARD.z)
-  grass.receiveShadow = true
-  root.add(grass)
+  // The water in the pool. The ground stays the bare beige board.
   const waterMaterial = new THREE.MeshStandardMaterial({
     color: oklch(0.74, 0.07, 215),
     roughness: 0.3,
@@ -1054,63 +977,15 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
   water.position.set(POOL_CX, DECK.top + 0.01, POOL_CZ)
   water.receiveShadow = true
   root.add(water)
-  parts.push(
-    {
-      object: new THREE.Group(),
-      kind: "fade",
-      start: 0.93,
-      end: 0.98,
-      travel: 0,
-      materials: [grassMaterial],
-      opacity: 1,
-    },
-    {
-      object: new THREE.Group(),
-      kind: "fade",
-      start: 0.93,
-      end: 0.98,
-      travel: 0,
-      materials: [waterMaterial],
-      opacity: 1,
-    }
-  )
-
-  // White loungers beside the pool.
-  const loungerMaterial = material(oklch(0.97, 0.003, 90), 0.7)
-  const lounger = () => {
-    const seat = boxGeometry({ size: [0.7, 0.1, 1.5], at: [0, 0.42, 0.25] })
-    const back = boxGeometry({
-      size: [0.7, 0.1, 0.8],
-      at: [0, 0.6, -0.8],
-      tilt: 0.55,
-    })
-    return mesh(mergeGeometries([seat, back]), loungerMaterial)
-  }
-  ;[1.3, 2.5].forEach((x, i) => addGrow(lounger(), x, 9.6, 0.93 + i * 0.01))
-
-  // Very few plain, smooth plants in one soft green.
-  const leaf = material(oklch(0.52, 0.07, 145), 0.9)
-  const segments = lite ? 16 : 36
-  const column = (height: number) =>
-    new THREE.LatheGeometry(
-      Array.from({ length: 13 }, (_, i) => {
-        const t = i / 12
-        const width =
-          height * 0.13 * Math.min(1, 0.72 + 2 * t) * (1 - t) ** 0.75
-        return new THREE.Vector2(width, t * height)
-      }),
-      segments
-    )
-  const mound = (radius: number) => {
-    const geometry = new THREE.SphereGeometry(radius, segments, segments / 2)
-    geometry.scale(1, 0.72, 1)
-    geometry.translate(0, radius * 0.6, 0)
-    return geometry
-  }
-  addGrow(mesh(column(5.2), leaf), -12.3, 1.8, 0.93)
-  addGrow(mesh(column(4.2), leaf), -12.7, -0.6, 0.935)
-  addGrow(mesh(mound(0.55), leaf), 5.1, 8.5, 0.94)
-  addGrow(mesh(mound(0.42), leaf), 8.6, 7.6, 0.945)
+  parts.push({
+    object: new THREE.Group(),
+    kind: "fade",
+    start: 0.93,
+    end: 0.98,
+    travel: 0,
+    materials: [waterMaterial],
+    opacity: 1,
+  })
 
   /* The drawing: every edge of the finished house, plus dimension lines. */
   const edges: THREE.BufferGeometry[] = ghostSources.map(
@@ -1221,7 +1096,6 @@ export function buildHouse({ lite = false }: { lite?: boolean } = {}) {
           materials.forEach((item) => item.dispose())
         }
       })
-      grassMap.dispose()
       sun.shadow.map?.dispose()
     },
   }
@@ -1255,10 +1129,6 @@ export function applyProgress(house: House, scene: THREE.Scene, p: number) {
         part.materials.forEach((item) => {
           item.opacity = part.opacity * t
         })
-        break
-      case "grow":
-        part.object.visible = t > 0
-        part.object.scale.setScalar(Math.max(t, 0.001))
         break
     }
   }

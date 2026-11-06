@@ -19,5 +19,5 @@ export const PHASES = [
   { key: "roof", start: 0.4 },
   { key: "windows", start: 0.64 },
   { key: "interior", start: 0.74 },
-  { key: "garden", start: 0.88 },
+  { key: "terrace", start: 0.88 },
 ] as const
